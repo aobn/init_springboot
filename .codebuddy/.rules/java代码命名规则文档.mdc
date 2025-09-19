@@ -1,3 +1,8 @@
+---
+description: 
+globs:
+alwaysApply: true
+---
 # Java代码命名规则文档
 
 ## 目录

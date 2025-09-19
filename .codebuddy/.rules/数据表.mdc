@@ -1,0 +1,22 @@
+---
+description: 
+globs:
+alwaysApply: true
+---
+
+## 数据库连接配置
+-主机: rm-bp1twd33b087qgv0l4o.mysql.rds.aliyuncs.com
+-端口: 3306
+-用户名: root
+-数据库: test
+-密码: 22222#Hua
+
+## user表
+```sql
+CREATE TABLE `user` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+```
+

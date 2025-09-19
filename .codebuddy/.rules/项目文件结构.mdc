@@ -1,0 +1,104 @@
+# Spring Boot 项目文件结构规范
+
+## 项目根目录结构
+```
+init_springboot/
+├── .codebuddy/                    # CodeBuddy配置目录
+│   └── .rules/                    # 项目规则文档
+├── api接口文档/                   # API接口文档目录
+├── docs/                          # 项目文档目录
+│   ├── api/                       # API文档
+│   ├── deployment/                # 部署文档
+│   └── rules/                     # 规则文档
+├── logs/                          # 日志文件目录
+├── scripts/                       # 脚本文件目录
+├── src/                           # 源代码目录
+│   ├── main/                      # 主要源代码
+│   │   ├── java/                  # Java源代码
+│   │   └── resources/             # 资源文件
+│   └── test/                      # 测试代码
+│       ├── java/                  # Java测试代码
+│       └── resources/             # 测试资源文件
+├── target/                        # Maven构建输出目录
+├── pom.xml                        # Maven项目配置文件
+├── README.md                      # 项目说明文档
+├── .gitignore                     # Git忽略文件配置
+└── docker-compose.yml             # Docker容器编排配置
+```
+
+## Java源代码结构 (src/main/java/com/example/demo/)
+```
+com.example.demo/
+├── DemoApplication.java           # Spring Boot启动类
+├── common/                        # 公共组件
+│   └── ApiResponse.java           # 统一API响应格式
+├── config/                        # 配置类
+│   ├── MyBatisPlusConfig.java     # MyBatis Plus配置
+│   └── WebConfig.java             # Web配置（CORS等）
+├── controller/                    # 控制器层（REST API）
+│   └── UserController.java       # 用户控制器
+├── entity/                        # 实体类（数据库映射）
+│   └── UserEntity.java           # 用户实体
+├── exception/                     # 异常处理
+│   └── GlobalExceptionHandler.java # 全局异常处理器
+├── mapper/                        # 数据访问层（MyBatis）
+│   └── UserMapper.java           # 用户数据访问接口
+├── security/                      # 安全相关（预留）
+├── service/                       # 业务逻辑层
+│   ├── UserService.java          # 用户服务接口
+│   └── impl/                      # 服务实现
+│       └── UserServiceImpl.java  # 用户服务实现
+└── utils/                         # 工具类（预留）
+```
+
+## 测试代码结构 (src/test/java/com/example/demo/)
+```
+com.example.demo/
+├── controller/                    # 控制器测试
+├── integration/                   # 集成测试
+└── service/                       # 服务层测试
+```
+
+## 资源文件结构 (src/main/resources/)
+```
+resources/
+├── application.properties        # 应用配置文件
+├── mapper/                       # MyBatis XML映射文件（可选）
+└── static/                       # 静态资源（可选）
+```
+
+## 文件命名规范
+
+### Java类命名
+- **实体类**: `*Entity.java` (如: UserEntity.java)
+- **控制器**: `*Controller.java` (如: UserController.java)
+- **服务接口**: `*Service.java` (如: UserService.java)
+- **服务实现**: `*ServiceImpl.java` (如: UserServiceImpl.java)
+- **数据访问**: `*Mapper.java` (如: UserMapper.java)
+- **配置类**: `*Config.java` (如: WebConfig.java)
+- **异常类**: `*Exception.java` (如: BusinessException.java)
+- **工具类**: `*Utils.java` (如: DateUtils.java)
+
+### 包命名规范
+- **根包**: `com.example.demo`
+- **控制器**: `com.example.demo.controller`
+- **服务层**: `com.example.demo.service`
+- **数据层**: `com.example.demo.mapper`
+- **实体类**: `com.example.demo.entity`
+- **配置类**: `com.example.demo.config`
+- **公共组件**: `com.example.demo.common`
+- **异常处理**: `com.example.demo.exception`
+- **工具类**: `com.example.demo.utils`
+
+## 重要说明
+
+1. **严格按照包结构放置文件**：每个Java类必须放在对应的包目录下
+2. **包声明与目录一致**：Java文件的package声明必须与文件所在目录完全一致
+3. **避免重复类名**：同一项目中不能有相同类名的类，即使在不同包中
+4. **遵循命名规范**：所有文件和类的命名必须遵循上述规范
+5. **API接口放在controller包**：所有REST API控制器必须放在controller包中
+
+## 作者信息
+- **作者**: xxh
+- **创建时间**: 2025-09-19
+- **最后更新**: 2025-09-19
