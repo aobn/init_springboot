@@ -12,23 +12,25 @@ import com.baomidou.mybatisplus.annotation.TableName;
  */
 @TableName("user")
 public class UserEntity {
-    
+
+    /**
+     * 用户ID
+     */
     @TableId(type = IdType.AUTO)
     private Long id;
-    
-    private String username;
-    
 
+    /**
+     * 用户名
+     */
+    private String username;
 
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String username) {
-        this.id = id;
+    public UserEntity(String username) {
         this.username = username;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -45,5 +47,11 @@ public class UserEntity {
         this.username = username;
     }
 
-
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }
