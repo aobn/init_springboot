@@ -1,0 +1,486 @@
+# Java代码注释规范文档
+
+**作者**: CodeBuddy开发团队  
+**创建时间**: 2025-09-20  
+**版本**: v1.0.0  
+**适用范围**: Spring Boot项目
+
+## 目录
+- [1. 概述](#1-概述)
+- [2. 注释类型与规范](#2-注释类型与规范)
+- [3. 类级别注释](#3-类级别注释)
+- [4. 方法级别注释](#4-方法级别注释)
+- [5. 字段级别注释](#5-字段级别注释)
+- [6. 行内注释](#6-行内注释)
+- [7. 特殊注释标记](#7-特殊注释标记)
+- [8. 注意事项与最佳实践](#8-注意事项与最佳实践)
+
+## 1. 概述
+
+### 1.1 文档目标
+本文档定义了Java代码注释的标准规范，确保代码的可读性、可维护性和团队协作效率。
+
+### 1.2 注释原则
+- **准确性**: 注释内容必须与代码实现保持一致
+- **简洁性**: 用最少的文字表达最清晰的含义
+- **完整性**: 重要的类、方法、字段都应有适当的注释
+- **及时性**: 代码变更时同步更新相关注释
+- **规范性**: 遵循统一的注释格式和风格
+
+## 2. 注释类型与规范
+
+### 2.1 JavaDoc注释 (`/** */`)
+用于类、接口、方法、字段的文档注释，可被JavaDoc工具提取生成API文档。
+
+### 2.2 块注释 (`/* */`)
+用于代码块的说明，通常用于复杂逻辑的解释。
+
+### 2.3 行注释 (`//`)
+用于单行代码的简短说明。
+
+## 3. 类级别注释
+
+### 3.1 基本格式
+```java
+/**
+ * 类的简要描述（一句话概括类的作用）
+ * 
+ * 详细描述（可选，多行描述类的功能、用途、设计思路等）
+ * 
+ * @author 作者姓名
+ * @since 创建日期（YYYY-MM-DD格式）
+ * @version 版本号（可选）
+ */
+```
+
+### 3.2 示例
+
+#### 3.2.1 Service类
+```java
+/**
+ * 用户管理服务实现类
+ * 
+ * 提供用户的增删改查功能，包括用户信息的验证、
+ * 数据库操作和业务逻辑处理。
+ * 
+ * @author xxh
+ * @since 2025-09-20
+ */
+@Service
+public class UserServiceImpl implements UserService {
+    // 类实现
+}
+```
+
+#### 3.2.2 Controller类
+```java
+/**
+ * 用户API控制器
+ * 
+ * 处理用户相关的HTTP请求，包括用户的增删改查操作。
+ * 所有接口遵循RESTful API设计规范。
+ * 
+ * @author xxh
+ * @since 2025-09-20
+ */
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+}
+```
+
+#### 3.2.3 Entity类
+```java
+/**
+ * 用户实体类
+ * 
+ * 对应数据库中的user表，包含用户的基本信息。
+ * 使用MyBatis-Plus注解进行ORM映射。
+ * 
+ * @author xxh
+ * @since 2025-09-20
+ */
+@TableName("user")
+public class UserEntity {
+}
+```
+
+## 4. 方法级别注释
+
+### 4.1 基本格式
+```java
+/**
+ * 方法的简要描述（一句话概括方法的作用）
+ * 
+ * 详细描述（可选，说明方法的具体功能、算法逻辑等）
+ * 
+ * @param 参数名 参数描述
+ * @return 返回值描述
+ * @throws 异常类型 异常描述
+ * @since 版本号（可选）
+ */
+```
+
+### 4.2 示例
+
+#### 4.2.1 普通方法
+```java
+/**
+ * 根据用户ID获取用户信息
+ * 
+ * 从数据库中查询指定ID的用户信息，如果用户不存在则返回null。
+ * 
+ * @param userId 用户ID，不能为null
+ * @return 用户实体对象，如果用户不存在则返回null
+ * @throws IllegalArgumentException 当userId为null时抛出
+ */
+public UserEntity getUserById(Long userId) {
+    // 方法实现
+}
+```
+
+#### 4.2.2 API接口方法
+```java
+/**
+ * 创建新用户
+ * 
+ * 接收用户信息并创建新用户，会验证用户名的唯一性。
+ * 如果用户名已存在，返回冲突错误。
+ * 
+ * @param userDTO 用户数据传输对象，包含用户名等信息
+ * @return API响应对象，包含创建的用户信息或错误信息
+ */
+@PostMapping("/create")
+public ApiResponse<UserEntity> createUser(@Valid @RequestBody UserDTO userDTO) {
+    // 方法实现
+}
+```
+
+#### 4.2.3 复杂业务方法
+```java
+/**
+ * 批量导入用户数据
+ * 
+ * 从Excel文件中读取用户数据并批量导入到数据库。
+ * 会验证数据格式和用户名唯一性，失败的记录会记录到错误日志中。
+ * 
+ * @param file Excel文件，格式必须为.xlsx
+ * @param operatorId 操作人ID，用于记录操作日志
+ * @return 导入结果，包含成功数量、失败数量和错误详情
+ * @throws IOException 文件读取失败时抛出
+ * @throws IllegalArgumentException 文件格式不正确时抛出
+ */
+public ImportResult importUsers(MultipartFile file, Long operatorId) throws IOException {
+    // 方法实现
+}
+```
+
+## 5. 字段级别注释
+
+### 5.1 基本格式
+```java
+/**
+ * 字段描述
+ */
+private Type fieldName;
+
+// 或者使用行注释
+private Type fieldName; // 字段描述
+```
+
+### 5.2 示例
+
+#### 5.2.1 实体类字段
+```java
+/**
+ * 用户ID，主键自增
+ */
+@TableId(type = IdType.AUTO)
+private Long id;
+
+/**
+ * 用户名，3-20个字符，系统内唯一
+ */
+private String username;
+
+/**
+ * 用户邮箱，用于登录和找回密码
+ */
+private String email;
+
+/**
+ * 用户状态：ACTIVE-激活，INACTIVE-未激活，LOCKED-锁定
+ */
+private String status;
+
+/**
+ * 创建时间
+ */
+private LocalDateTime createTime;
+
+/**
+ * 最后更新时间
+ */
+private LocalDateTime updateTime;
+```
+
+#### 5.2.2 服务依赖字段
+```java
+/**
+ * 用户数据访问层
+ */
+private final UserMapper userMapper;
+
+/**
+ * 邮件发送服务
+ */
+private final EmailService emailService;
+
+/**
+ * 日志记录器
+ */
+private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+```
+
+#### 5.2.3 配置常量字段
+```java
+/**
+ * 用户名最小长度
+ */
+private static final int MIN_USERNAME_LENGTH = 3;
+
+/**
+ * 用户名最大长度
+ */
+private static final int MAX_USERNAME_LENGTH = 20;
+
+/**
+ * 密码加密盐值轮数
+ */
+private static final int BCRYPT_ROUNDS = 12;
+
+/**
+ * JWT令牌过期时间（24小时）
+ */
+private static final long JWT_EXPIRATION = 24 * 60 * 60 * 1000L;
+```
+
+## 6. 行内注释
+
+### 6.1 使用场景
+- 复杂逻辑的关键步骤说明
+- 特殊处理的原因说明
+- 临时代码或调试代码的标记
+- 重要常量或魔法数字的解释
+- 业务规则的说明
+
+### 6.2 示例
+```java
+public ApiResponse<UserEntity> createUser(UserDTO userDTO) {
+    // 检查用户名是否已存在
+    UserEntity existingUser = userService.getUserByUsername(userDTO.getUsername());
+    if (existingUser != null) {
+        return ApiResponse.conflict("用户名已存在");
+    }
+
+    // 创建新用户实体
+    UserEntity userEntity = new UserEntity();
+    userEntity.setUsername(userDTO.getUsername());
+    userEntity.setEmail(userDTO.getEmail());
+    userEntity.setCreateTime(LocalDateTime.now()); // 设置当前时间为创建时间
+    userEntity.setStatus("ACTIVE"); // 新用户默认为激活状态
+
+    // 密码加密处理
+    String encryptedPassword = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12));
+    userEntity.setPassword(encryptedPassword);
+
+    // 保存到数据库
+    boolean saved = userMapper.insert(userEntity) > 0;
+    if (!saved) {
+        throw new RuntimeException("用户创建失败"); // 数据库操作失败
+    }
+
+    // 发送欢迎邮件（异步处理，失败不影响用户创建）
+    try {
+        emailService.sendWelcomeEmail(userEntity.getEmail(), userEntity.getUsername());
+    } catch (Exception e) {
+        logger.warn("发送欢迎邮件失败: {}", e.getMessage());
+    }
+
+    return ApiResponse.created("创建用户成功", userEntity);
+}
+```
+
+## 7. 特殊注释标记
+
+### 7.1 标准标记
+```java
+// TODO: 待实现的功能
+// FIXME: 需要修复的问题
+// HACK: 临时解决方案
+// NOTE: 重要说明
+// WARNING: 警告信息
+// DEPRECATED: 已废弃的代码
+// OPTIMIZE: 性能优化点
+// REVIEW: 需要代码审查
+```
+
+### 7.2 示例
+```java
+public class UserService {
+    
+    /**
+     * 获取用户统计信息
+     * 
+     * TODO: 添加缓存机制提高查询性能
+     * 
+     * @return 用户统计信息
+     */
+    public UserStatistics getUserStatistics() {
+        // FIXME: 当前实现效率较低，需要优化SQL查询
+        // OPTIMIZE: 考虑使用Redis缓存统计结果
+        return userMapper.selectStatistics();
+    }
+    
+    /**
+     * 发送邮件通知
+     * 
+     * @deprecated 该方法已废弃，请使用 {@link NotificationService#sendEmail(String, String)}
+     */
+    @Deprecated
+    public void sendEmail(String email, String content) {
+        // DEPRECATED: 使用新的通知服务替代
+        // WARNING: 此方法将在v2.0版本中移除
+    }
+    
+    /**
+     * 批量处理用户数据
+     */
+    public void batchProcessUsers(List<UserEntity> users) {
+        // HACK: 临时解决方案，分批处理避免内存溢出
+        // TODO: 重构为流式处理
+        int batchSize = 1000;
+        for (int i = 0; i < users.size(); i += batchSize) {
+            int end = Math.min(i + batchSize, users.size());
+            List<UserEntity> batch = users.subList(i, end);
+            processBatch(batch);
+        }
+    }
+}
+```
+
+## 8. 注意事项与最佳实践
+
+### 8.1 注释维护
+- **同步更新**: 代码修改时必须同步更新相关注释
+- **定期检查**: 定期检查注释的准确性和完整性
+- **删除无效**: 及时删除过时或无效的注释
+- **版本控制**: 重要变更在注释中记录版本信息
+
+### 8.2 注释质量
+- **避免废话**: 不要写显而易见的注释
+- **解释原因**: 重点说明为什么这样做，而不是做了什么
+- **保持简洁**: 用最少的文字表达最清晰的含义
+- **使用中文**: 项目内部使用中文注释，提高可读性
+
+### 8.3 错误示例
+```java
+// ❌ 错误：显而易见的注释
+private String name; // 姓名字段
+private int age; // 年龄
+i++; // i自增1
+
+// ❌ 错误：过时的注释
+/**
+ * 使用MD5加密密码
+ */
+public String encryptPassword(String password) {
+    // 实际使用的是BCrypt加密
+    return BCrypt.hashpw(password, BCrypt.gensalt());
+}
+
+// ❌ 错误：无意义的注释
+/**
+ * 构造函数
+ */
+public User() {
+}
+
+// ❌ 错误：注释与代码不符
+/**
+ * 删除用户
+ */
+public void updateUser(UserEntity user) {
+    userMapper.updateById(user);
+}
+```
+
+### 8.4 正确示例
+```java
+// ✅ 正确：解释业务逻辑
+/**
+ * 软删除用户
+ * 
+ * 不直接从数据库删除用户记录，而是标记为已删除状态，
+ * 以保留用户的历史数据用于审计。
+ */
+public void deleteUser(Long userId) {
+    UserEntity user = new UserEntity();
+    user.setId(userId);
+    user.setDeleted(true); // 标记为已删除
+    user.setDeleteTime(LocalDateTime.now());
+    userMapper.updateById(user);
+}
+
+// ✅ 正确：解释复杂算法
+/**
+ * 计算用户信用评分
+ * 
+ * 基于用户的历史行为数据计算信用评分，算法考虑以下因素：
+ * 1. 登录频率（权重30%）
+ * 2. 交易记录（权重40%）
+ * 3. 违规次数（权重30%）
+ */
+public int calculateCreditScore(Long userId) {
+    // 获取用户行为数据
+    UserBehavior behavior = getUserBehavior(userId);
+    
+    // 计算各项得分
+    int loginScore = calculateLoginScore(behavior.getLoginFrequency());
+    int transactionScore = calculateTransactionScore(behavior.getTransactions());
+    int violationScore = calculateViolationScore(behavior.getViolations());
+    
+    // 加权计算最终得分
+    return (int) (loginScore * 0.3 + transactionScore * 0.4 + violationScore * 0.3);
+}
+
+// ✅ 正确：解释特殊处理
+public List<UserEntity> getActiveUsers() {
+    // 使用索引查询提高性能，status字段已建立索引
+    QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
+    wrapper.eq("status", "ACTIVE")
+           .eq("deleted", false) // 排除软删除的记录
+           .orderByDesc("last_login_time"); // 按最后登录时间倒序
+    
+    return userMapper.selectList(wrapper);
+}
+```
+
+### 8.5 注释检查清单
+在代码提交前，请检查以下项目：
+
+- [ ] 所有public类都有类级别注释
+- [ ] 所有public方法都有方法级别注释
+- [ ] 复杂的private方法有适当的注释
+- [ ] 重要的字段有注释说明
+- [ ] 复杂的业务逻辑有行内注释
+- [ ] 注释内容与代码实现一致
+- [ ] 没有过时或无效的注释
+- [ ] 使用了适当的特殊标记（TODO、FIXME等）
+
+---
+
+**维护人员**: CodeBuddy开发团队  
+**文档状态**: 当前版本  
+**更新频率**: 根据项目需要更新  
+**最后更新**: 2025-09-20

@@ -1,4 +1,4 @@
-package com.example.demo.api;
+package com.example.demo.controller;
 
 import com.example.demo.common.ApiResponse;
 import com.example.demo.dto.UserDTO;
@@ -45,12 +45,13 @@ public class UserController {
     /**
      * 根据用户ID获取用户信息
      * 
-     * @param userId 用户ID
+     * @param request 获取用户请求
      * @return 用户信息响应
      */
-    @GetMapping("/{userId}")
-    public ApiResponse<UserEntity> getUserById(@PathVariable Long userId) {
+    @PostMapping("/getById")
+    public ApiResponse<UserEntity> getUserById(@RequestBody GetUserByIdRequest request) {
         try {
+            Long userId = request.getUserId();
             UserEntity userEntity = userService.getUserById(userId);
             if (userEntity == null) {
                 return ApiResponse.notFound("用户不存在");
@@ -191,6 +192,21 @@ public class UserController {
      * 删除用户请求对象
      */
     public static class DeleteUserRequest {
+        private Long userId;
+
+        public Long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Long userId) {
+            this.userId = userId;
+        }
+    }
+
+    /**
+     * 获取用户请求对象
+     */
+    public static class GetUserByIdRequest {
         private Long userId;
 
         public Long getUserId() {

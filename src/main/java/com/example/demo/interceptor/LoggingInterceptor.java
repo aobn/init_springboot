@@ -34,12 +34,8 @@ public class LoggingInterceptor implements HandlerInterceptor {
         String queryString = request.getQueryString();
         String clientIp = getClientIpAddress(request);
         
-        logger.info("=== 请求开始 ===");
-        logger.info("请求方法: {}", method);
-        logger.info("请求路径: {}", uri);
-        logger.info("查询参数: {}", queryString != null ? queryString : "无");
-        logger.info("客户端IP: {}", clientIp);
-        logger.info("User-Agent: {}", request.getHeader("User-Agent"));
+        logger.info("=== 请求开始 === 请求方法: {} | 请求路径: {} | 查询参数: {} | 客户端IP: {} | User-Agent: {}", 
+                   method, uri, queryString != null ? queryString : "无", clientIp, request.getHeader("User-Agent"));
         
         return true;
     }
@@ -58,17 +54,13 @@ public class LoggingInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         int status = response.getStatus();
         
-        logger.info("=== 请求结束 ===");
-        logger.info("请求方法: {}", method);
-        logger.info("请求路径: {}", uri);
-        logger.info("响应状态: {}", status);
-        logger.info("执行时间: {}ms", executeTime);
+        String exceptionInfo = ex != null ? " | 异常: " + ex.getMessage() : "";
+        logger.info("=== 请求结束 === 请求方法: {} | 请求路径: {} | 响应状态: {} | 执行时间: {}ms{} ==================", 
+                   method, uri, status, executeTime, exceptionInfo);
         
         if (ex != null) {
-            logger.error("请求异常: ", ex);
+            logger.error("请求异常详情: ", ex);
         }
-        
-        logger.info("==================");
     }
 
     /**

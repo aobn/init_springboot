@@ -10,7 +10,7 @@
 | 接口名称 | 请求方法 | 请求路径 | 接口描述 | 认证要求 |
 |----------|----------|----------|----------|----------|
 | 获取用户列表 | POST | `/list` | 获取所有用户列表 | 无 |
-| 获取用户详情 | GET | `/{userId}` | 根据用户ID获取用户信息 | 无 |
+| 获取用户详情 | POST | `/getById` | 根据用户ID获取用户信息 | 无 |
 | 创建用户 | POST | `/create` | 创建新用户 | 无 |
 | 更新用户 | POST | `/update` | 更新用户信息 | 无 |
 | 删除用户 | POST | `/delete` | 删除用户 | 无 |
@@ -69,19 +69,22 @@ curl -X POST http://localhost:8080/api/users/list \
 ### 2. 获取用户详情
 
 **接口标识**: `USER_DETAIL`  
-**请求路径**: `GET /api/users/{userId}`  
+**请求路径**: `POST /api/users/getById`  
 **接口描述**: 根据用户ID获取用户详细信息  
 **认证要求**: 无
 
 #### 请求参数
 | 参数名 | 类型 | 位置 | 必填 | 说明 |
 |--------|------|------|------|------|
-| userId | Long | Path | 是 | 用户ID |
+| userId | Long | Body | 是 | 用户ID |
 
 #### 请求示例
 ```bash
-curl -X GET http://localhost:8080/api/users/1 \
-  -H "Content-Type: application/json"
+curl -X POST http://localhost:8080/api/users/getById \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": 1
+  }'
 ```
 
 #### 响应示例
@@ -329,10 +332,14 @@ curl -X POST http://localhost:8080/api/users/create \
 curl -X POST http://localhost:8080/api/users/list
 
 # 根据ID查询用户
-curl -X GET http://localhost:8080/api/users/1
+curl -X POST http://localhost:8080/api/users/getById \
+  -H "Content-Type: application/json" \
+  -d '{"userId": 1}'
 
 # 查询不存在的用户（应返回404错误）
-curl -X GET http://localhost:8080/api/users/999
+curl -X POST http://localhost:8080/api/users/getById \
+  -H "Content-Type: application/json" \
+  -d '{"userId": 999}'
 ```
 
 ## 注意事项
